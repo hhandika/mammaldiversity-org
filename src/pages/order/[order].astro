@@ -1,0 +1,57 @@
+---
+import { getOrder } from "../../../db/mdd";
+import PageDivider from "../../components/PageDivider.astro";
+import Title from "../../components/Title.astro";
+import MainPage from "../../layouts/MainPage.astro";
+import Page from "../../layouts/Page.astro";
+import cntl from "cntl";
+import { buildPhylogeneticTree } from "../../libs/phylogeny";
+import TreeTips from "../../components/phylo/TreeTips.astro";
+import RecursiveTreeTips from "../../components/phylo/RecursiveTreeTips.astro";
+import PhyloContainer from "../../layouts/PhyloContainer.astro";
+
+const headerClasses = cntl`
+  text-center
+  text-xl 
+  md:text-2xl 
+  text-spectra-800 
+  dark:text-spectra-200 
+  mb-2
+`;
+
+export const getStaticPaths = async () => {
+  const data = getOrder();
+  return data.map((taxonOrder: string) => ({
+    params: { order: taxonOrder.toLowerCase() },
+    props: { taxonOrder },
+  }));
+};
+
+const { taxonOrder } = Astro.props;
+
+const { root } = buildPhylogeneticTree({
+  filterByRank: "order",
+  filterByName: taxonOrder,
+  maxDepth: 4,
+});
+---
+
+<Page title={`${taxonOrder} Order`} isIndexed={false}>
+  <MainPage isIndexed={false}>
+    <div class="mt-8 md:mt-16">
+      <p class={headerClasses}>Order</p>
+      <Title bottomPadding={8}>{taxonOrder}</Title>
+    </div>
+    <PageDivider />
+    <PhyloContainer>
+      {
+        root.children.map((child, i) => (
+          <>
+            <h2 class="mb-2 font-bold text-xl">{child.name}</h2>
+            <RecursiveTreeTips nodes={child.children} />
+          </>
+        ))
+      }
+    </PhyloContainer>
+  </MainPage>
+</Page>
