@@ -16,11 +16,12 @@ const remainingSynonyms = synonyms.slice(INITIAL_COUNT);
 
 const PanelClasses = cntl`
   sticky 
-  top-0 
+  top-2 
   bg-spectra-50 
   dark:bg-spectra-950 
   rounded-xl 
   py-2
+  mt-4
 `;
 
 const containerClasses = cntl`
@@ -36,7 +37,7 @@ const containerClasses = cntl`
 const captionTextClasses = cntl`
   text-spectra-800 
   dark:text-spectra-100 
-  text-sm 
+  text-xs 
   mx-4
 `;
 ---
@@ -45,14 +46,14 @@ const captionTextClasses = cntl`
   synonyms.length > 0 && (
 <div class={containerClasses}>
     
-    <h2 class="text-lg md:text-xl font-semibold mx-4">
+    <h2 class="text-lg md:text-xl font-semibold mx-4" aria-label="Names and synonyms">
       Names and synonyms
     </h2>
-    <h3 class={captionTextClasses}>
+    <h3 class={captionTextClasses} aria-label="Present and past (if available) associated names to the species. Click on a name to view its details.">
       Present and past (if available) associated names to the species. Click on
     a name to view its details. 
     </h3>
-    <p class={captionTextClasses}>Total: {synonyms.length} name{synonyms.length !== 1 ? "s" : ""} and synonym{synonyms.length !== 1 ? "s" : ""}.</p>
+    <p class={captionTextClasses} aria-label={`Total: ${synonyms.length} name${synonyms.length !== 1 ? 's' : ''} and synonym${synonyms.length !== 1 ? 's' : ''}.`}>Total: {synonyms.length} name{synonyms.length !== 1 ? "s" : ""} and synonym{synonyms.length !== 1 ? "s" : ""}.</p>
     </div>
     <div class="flex flex-wrap items-center justify-center gap-2 p-2">
     {initialSynonyms.map((s) => (

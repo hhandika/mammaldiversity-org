@@ -121,13 +121,22 @@ function ImageCaption({ image }: { image: MilMetadata }) {
         {image.description && (
           <>
             <span>Description</span>
-            <span> : </span>
-            <span>{image.description}</span>
+            <span>:</span>
+            <span className="pl-1">{image.description}</span>
           </>
         )}
       </div>
       <p className="mt-2">Distribution :</p>
       <p>{image.distribution ?? "Unknown"}</p>
+      {image.isUncertainIdentification && (
+        <div className="mt-4 text-xs italic">
+          <p>Notes :</p>
+          <p>
+            The species identification is uncertain. This individual may
+            represent a different taxon.
+          </p>
+        </div>
+      )}
       <MilAttributionByMddId milId={image.milId} />
     </div>
   );
